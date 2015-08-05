@@ -12,4 +12,4 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 
 // Register the WordPress autoload.
 // It will load files that has `class-` or `trait-` as prefix.
-register_wp_autoload( 'Tank\\', __DIR__ . '/src' );
+register_wp_autoload( 'Tank\\', __DIR__ );
