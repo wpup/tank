@@ -65,6 +65,12 @@ class Container_Test extends \WP_UnitTestCase {
 
 		$this->assertEquals( 'App', $this->container->make( 'Singleton' ) );
 		$this->assertTrue( $this->container->is_singleton( 'Singleton' ) );
+
+		try {
+			$this->container->is_singleton( true );
+		} catch ( \Exception $e ) {
+			$this->assertEquals( 'Invalid argument. Must be string.', $e->getMessage() );
+		}
 	}
 
 	public function test_offset_exists() {
