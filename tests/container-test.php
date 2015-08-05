@@ -2,7 +2,7 @@
 
 namespace Tank\Tests;
 
-class Container_Test extends \WP_UnitTestCase {
+class Container_Test extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		parent::setUp();
