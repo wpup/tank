@@ -12,6 +12,18 @@ WordPress Container.
 $ composer require frozzare/tank
 ```
 
+## Example
+
+```php
+use Tank\Container;
+
+class Plugin_Loader extends Container {
+
+}
+```
+
+Check the [source code](https://github.com/frozzare/tank/blob/master/src/Container.php) for methods that can be used.
+
 ## License
 
 MIT © [Fredrik Forsmo](https://github.com/frozzare)
