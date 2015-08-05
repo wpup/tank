@@ -19,7 +19,15 @@ use Tank\Container;
 
 class Plugin_Loader extends Container {
 
+  public function __construct() {
+    $this->bind( 'number', 12345 );
+  }
+
 }
+
+$loader = new Plugin_Loader;
+echo $loader->make('number');
+// 12345
 ```
 
 Check the [source code](https://github.com/frozzare/tank/blob/master/src/Container.php) for methods that can be used.
