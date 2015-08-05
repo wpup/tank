@@ -9,7 +9,7 @@ WordPress Container.
 ## Install
 
 ```
-$ composer install frozzare/tank
+$ composer require frozzare/tank
 ```
 
 ## License
