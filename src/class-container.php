@@ -3,6 +3,8 @@
 namespace Tank;
 
 use ArrayAccess;
+use Closure;
+use Exception;
 use InvalidArgumentException;
 
 /**
@@ -32,18 +34,35 @@ class Container implements ArrayAccess {
 	 * @param string $id
 	 * @param mixed $value
 	 * @param bool $shared
+	 *
+	 * @return mixed
 	 */
 	public function bind( $id, $value = null, $shared = false ) {
-		if ( ! $this->is_shareable( $id ) ) {
-			throw new \Exception( sprintf( 'Identifier `%s` is a singleton and cannot be rebind', $id ) );
+		if ( $this->is_singleton( $id ) ) {
+			throw new Exception( sprintf( 'Identifier `%s` is a singleton and cannot be rebind', $id ) );
 		}
 
-		if ( ! $value instanceof Closure ) {
-			$value = $this->get_closure( $value, $shared );
-		}
+		$closure = $this->get_closure( $value, $shared );
 
-		$this->values[$id] = compact( 'value', 'shared' );
+		$this->values[$id] = compact( 'closure', 'shared' );
 		$this->keys[$id] = true;
+
+		return $value;
+	}
+
+	/**
+	 * Call closure.
+	 *
+	 * @param mixed $closure
+	 *
+	 * @return mixed
+	 */
+	protected function call_closure( $closure ) {
+		if ( $closure instanceof Closure ) {
+			return $this->call_closure( $closure( $this ) );
+		}
+
+		return $closure;
 	}
 
 	/**
@@ -58,21 +77,6 @@ class Container implements ArrayAccess {
 	}
 
 	/**
-	 * Check if the container item is shareable or not.
-	 *
-	 * @param string $id
-	 *
-	 * @return bool
-	 */
-	protected function is_shareable( $id ) {
-		if ( ! isset( $this->keys[$id] ) ) {
-			return true;
-		}
-
-		return $this->values[$id]['shared'] === false;
-	}
-
-	/**
 	 * Get closure function.
 	 *
 	 * @param mixed $value
@@ -81,9 +85,28 @@ class Container implements ArrayAccess {
 	 * @return mixed
 	 */
 	protected function get_closure( $value, $shared = false ) {
-		return function () use( $value, $shared ) {
+		return function() use( $value, $shared ) {
 			return $value;
 		};
+	}
+
+	/**
+	 * Determine if a given type is a singleton or not.
+	 *
+	 * @param string $id
+	 *
+	 * @return bool
+	 */
+	public function is_singleton( $id ) {
+		if ( ! is_string( $id ) ) {
+			throw new InvalidArgumentException( 'Invalid argument. Must be string.' );
+		}
+
+		if ( ! isset( $this->keys[$id] ) ) {
+			return false;
+		}
+
+		return $this->values[$id]['shared'] === true;
 	}
 
 	/**
@@ -94,14 +117,14 @@ class Container implements ArrayAccess {
 	 */
 	public function make( $id ) {
 		if ( ! isset( $this->keys[$id] ) ) {
-			throw new \InvalidArgumentException( sprintf( 'Identifier `%s` is not defined', $id ) );
+			throw new InvalidArgumentException( sprintf( 'Identifier `%s` is not defined', $id ) );
 		}
 
-		$value  = $this->values[$id];
-		$shared = $value['shared'];
-		$value  = $value['value'];
+		$value   = $this->values[$id];
+		$shared  = $value['shared'];
+		$closure = $value['closure'];
 
-		return call_user_func( $value );
+		return $this->call_closure( $closure );
 	}
 
 	/**
@@ -109,6 +132,8 @@ class Container implements ArrayAccess {
 	 *
 	 * @param string $id
 	 * @param mixed $value
+	 *
+	 * @return mixed
 	 */
 	public function singleton( $id, $value ) {
 		return $this->bind( $id, $value, true );

@@ -24,6 +24,18 @@ class Container_Test extends \WP_UnitTestCase {
 		$this->assertEquals( 'Fredrik', $this->container->make( 'name' ) );
 	}
 
+	public function test_closure() {
+		$this->container->bind( 'num', 123 );
+		$this->container->bind( 'num2', function ( $c ) {
+			return $c->make( 'num' );
+		} );
+		$this->container->bind( 'num3', function ( $c ) {
+			return $c->make( 'num2' );
+		} );
+		$this->assertEquals( 123, $this->container->make( 'num2' ) );
+		$this->assertEquals( 123, $this->container->make( 'num3' ) );
+	}
+
 	public function test_exists() {
 		$this->container->bind( 'name', 'Fredrik' );
 		$this->assertTrue( $this->container->exists( 'name' ) );
@@ -52,6 +64,7 @@ class Container_Test extends \WP_UnitTestCase {
 		}
 
 		$this->assertEquals( 'App', $this->container->make( 'Singleton' ) );
+		$this->assertTrue( $this->container->is_singleton( 'Singleton' ) );
 	}
 
 	public function test_offset_exists() {
