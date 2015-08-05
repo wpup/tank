@@ -24,10 +24,10 @@
   },
   "require": {
     "php": ">=5.4",
-    "composer/installers": "~1.0"
+    "composer/installers": "~1.0",
+    "phpunit/phpunit": "4.7"
   },
   "require-dev": {
-    "frozzare/wp-test-suite": "~1.0",
     "wp-coding-standards/wpcs": "dev-develop"
   },
   "scripts": {
