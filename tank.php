@@ -3,7 +3,7 @@
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
-// Framework requires PHP 5.4 or newer
+// Tank requires PHP 5.4 or newer
 if ( version_compare( PHP_VERSION, '5.4.0', '<' ) ) {
 	exit( 'Tank for WordPress requires PHP version 5.4 or higher.' );
 }

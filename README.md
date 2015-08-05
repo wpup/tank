@@ -4,7 +4,7 @@
 
 > Requires PHP 5.4
 
-WordPress container.
+WordPress Container.
 
 ## Install
 
