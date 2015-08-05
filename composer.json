@@ -17,6 +17,9 @@
   "support": {
     "issues": "https://github.com/frozzare/tank/issues"
   },
+  "autoload": {
+    "files": ["tank.php"]
+  },
   "require": {
     "php": ">=5.4",
     "composer/installers": "~1.0",
