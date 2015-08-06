@@ -172,7 +172,7 @@ class Container implements ArrayAccess {
 	 *
 	 * @return mixed
 	 */
-	public function singleton( $id, $value ) {
+	public function singleton( $id, $value = null ) {
 		return $this->bind( $id, $value, true );
 	}
 
