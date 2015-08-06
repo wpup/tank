@@ -2,11 +2,19 @@
 
 namespace Tank\Tests;
 
+use Tank\Container;
+
+class Test {
+	public function value() {
+		return 'Test class';
+	}
+}
+
 class Container_Test extends \PHPUnit_Framework_TestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->container = new \Tank\Container;
+		$this->container = new Container;
 	}
 
 	public function tearDown() {
@@ -34,6 +42,23 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		} );
 		$this->assertEquals( 123, $this->container->make( 'num2' ) );
 		$this->assertEquals( 123, $this->container->make( 'num3' ) );
+	}
+
+	public function test_closure_injection() {
+		$this->container->bind( 'num', 123 );
+		$this->container->bind( 'num2', function ( Container $c ) {
+			return $c->make( 'num' );
+		} );
+		$this->container->bind( 'num3', function ( Container $c, $num ) {
+			return $c->make( 'num2' ) + $num;
+		} );
+		$this->assertEquals( 123, $this->container->make( 'num2' ) );
+		$this->assertEquals( 124, $this->container->make( 'num3', [1] ) );
+		$this->container->bind( new Test );
+		$this->container->bind( 'test-class', function ( Test $test ) {
+			return $test->value();
+		} );
+		$this->assertEquals( 'Test class', $this->container->make( 'test-class' ) );
 	}
 
 	public function test_exists() {

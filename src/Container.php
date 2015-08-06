@@ -5,6 +5,7 @@ namespace Tank;
 use ArrayAccess;
 use Closure;
 use Exception;
+use ReflectionFunction;
 use InvalidArgumentException;
 
 /**
@@ -38,11 +39,20 @@ class Container implements ArrayAccess {
 	 * @return mixed
 	 */
 	public function bind( $id, $value = null, $singleton = false ) {
-		if ( $this->is_singleton( $id ) ) {
+		if ( is_string( $id ) && $this->is_singleton( $id ) ) {
 			throw new Exception( sprintf( 'Identifier `%s` is a singleton and cannot be rebind', $id ) );
 		}
 
-		$closure = $this->get_closure( $value, $singleton );
+		if ( is_object( $id ) && get_class( $id ) !== false ) {
+			$value = $id;
+			$id    = get_class( $id );
+		}
+
+		if ( $value instanceof Closure ) {
+			$closure = $value;
+		} else {
+			$closure = $this->get_closure( $value, $singleton );
+		}
 
 		$this->values[$id] = compact( 'closure', 'singleton' );
 		$this->keys[$id] = true;
@@ -57,9 +67,33 @@ class Container implements ArrayAccess {
 	 *
 	 * @return mixed
 	 */
-	protected function call_closure( $closure ) {
+	protected function call_closure( $closure, array $parameters = [] ) {
 		if ( $closure instanceof Closure ) {
-			return $this->call_closure( $closure( $this ) );
+			$rc     = new ReflectionFunction( $closure );
+			$args   = $rc->getParameters();
+			$params = $parameters;
+
+			foreach ( $args as $index => $arg ) {
+				if ( $arg->getClass() === null ) {
+					continue;
+				}
+
+				if ( $arg->getClass()->name === 'Tank\Container' ) {
+					$parameters[$index] = $this;
+				} else if ( $this->exists( $arg->getClass()->name ) ) {
+					$parameters[$index] = $this->make( $arg->getClass()->name );
+				}
+			}
+
+			if ( ! empty( $args ) && empty( $parameters ) ) {
+				$parameters[0] = $this;
+			}
+
+			if ( count( $args ) > count( $parameters ) ) {
+				$parameters = array_merge( $parameters, $params );
+			}
+
+			return $this->call_closure( call_user_func_array( $closure, $parameters ), $parameters );
 		}
 
 		return $closure;
@@ -110,12 +144,14 @@ class Container implements ArrayAccess {
 	}
 
 	/**
+	 * Resolve the given type from the container.
 	 *
 	 * @param string $id
+	 * @param array $parameters
 	 *
 	 * @return mixed
 	 */
-	public function make( $id ) {
+	public function make( $id, array $parameters = [] ) {
 		if ( ! isset( $this->keys[$id] ) ) {
 			throw new InvalidArgumentException( sprintf( 'Identifier `%s` is not defined', $id ) );
 		}
@@ -124,7 +160,7 @@ class Container implements ArrayAccess {
 		// $singleton = $value['singleton'];
 		$closure   = $value['closure'];
 
-		return $this->call_closure( $closure );
+		return $this->call_closure( $closure, $parameters );
 	}
 
 	/**
