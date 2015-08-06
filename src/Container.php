@@ -45,8 +45,7 @@ class Container implements ArrayAccess {
 
 		if ( is_object( $id ) && get_class( $id ) !== false ) {
 			$value = $id;
-			$id    = get_class( $id );
-			$id    = ( strpos( $id, '\\' ) !== false ? '\\' : '' ) . $id;
+			$id    = $this->get_class_prefix( get_class( $id ) );
 		}
 
 		if ( $value instanceof Closure ) {
@@ -73,7 +72,11 @@ class Container implements ArrayAccess {
 			$rc      = new ReflectionFunction( $closure );
 			$args    = $rc->getParameters();
 			$params  = $parameters;
-			$classes = [get_class( $this ), get_parent_class( $this )];
+			$classes = [
+				$this->get_class_prefix( get_class( $this ) ),
+				get_class( $this ),
+				get_parent_class( $this )
+			];
 
 			foreach ( $args as $index => $arg ) {
 				if ( $arg->getClass() === null ) {
@@ -109,7 +112,7 @@ class Container implements ArrayAccess {
 	 * @return bool
 	 */
 	public function exists( $id ) {
-		return isset( $this->keys[$id] );
+		return isset( $this->keys[$this->get_class_prefix( $id )] );
 	}
 
 	/**
@@ -124,6 +127,17 @@ class Container implements ArrayAccess {
 		return function() use( $value, $singleton ) {
 			return $value;
 		};
+	}
+
+	/**
+	 * Get class prefix.
+	 *
+	 * @param string $class
+	 *
+	 * @return string
+	 */
+	protected function get_class_prefix( $class ) {
+		return ( strpos( $class, '\\' ) !== false ? '\\' : '' ) . $class;
 	}
 
 	/**
@@ -154,11 +168,11 @@ class Container implements ArrayAccess {
 	 * @return mixed
 	 */
 	public function make( $id, array $parameters = [] ) {
-		if ( ! isset( $this->keys[$id] ) ) {
+		if ( ! $this->exists( $id ) ) {
 			throw new InvalidArgumentException( sprintf( 'Identifier `%s` is not defined', $id ) );
 		}
 
-		$value     = $this->values[$id];
+		$value     = $this->values[$this->get_class_prefix( $id )];
 		// $singleton = $value['singleton'];
 		$closure   = $value['closure'];
 
