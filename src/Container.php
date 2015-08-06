@@ -33,18 +33,18 @@ class Container implements ArrayAccess {
 	 *
 	 * @param string $id
 	 * @param mixed $value
-	 * @param bool $shared
+	 * @param bool $singleton
 	 *
 	 * @return mixed
 	 */
-	public function bind( $id, $value = null, $shared = false ) {
+	public function bind( $id, $value = null, $singleton = false ) {
 		if ( $this->is_singleton( $id ) ) {
 			throw new Exception( sprintf( 'Identifier `%s` is a singleton and cannot be rebind', $id ) );
 		}
 
-		$closure = $this->get_closure( $value, $shared );
+		$closure = $this->get_closure( $value, $singleton );
 
-		$this->values[$id] = compact( 'closure', 'shared' );
+		$this->values[$id] = compact( 'closure', 'singleton' );
 		$this->keys[$id] = true;
 
 		return $value;
@@ -80,12 +80,12 @@ class Container implements ArrayAccess {
 	 * Get closure function.
 	 *
 	 * @param mixed $value
-	 * @param bool $shared
+	 * @param bool $singleton
 	 *
 	 * @return mixed
 	 */
-	protected function get_closure( $value, $shared = false ) {
-		return function() use( $value, $shared ) {
+	protected function get_closure( $value, $singleton = false ) {
+		return function() use( $value, $singleton ) {
 			return $value;
 		};
 	}
@@ -106,7 +106,7 @@ class Container implements ArrayAccess {
 			return false;
 		}
 
-		return $this->values[$id]['shared'] === true;
+		return $this->values[$id]['singleton'] === true;
 	}
 
 	/**
@@ -120,9 +120,9 @@ class Container implements ArrayAccess {
 			throw new InvalidArgumentException( sprintf( 'Identifier `%s` is not defined', $id ) );
 		}
 
-		$value   = $this->values[$id];
-		$shared  = $value['shared'];
-		$closure = $value['closure'];
+		$value     = $this->values[$id];
+		// $singleton = $value['singleton'];
+		$closure   = $value['closure'];
 
 		return $this->call_closure( $closure );
 	}
