@@ -46,6 +46,7 @@ class Container implements ArrayAccess {
 		if ( is_object( $id ) && get_class( $id ) !== false ) {
 			$value = $id;
 			$id    = get_class( $id );
+			$id    = ( strpos( $id, '\\' ) !== false ? '\\' : '' ) . $id;
 		}
 
 		if ( $value instanceof Closure ) {
