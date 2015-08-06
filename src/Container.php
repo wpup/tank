@@ -69,16 +69,17 @@ class Container implements ArrayAccess {
 	 */
 	protected function call_closure( $closure, array $parameters = [] ) {
 		if ( $closure instanceof Closure ) {
-			$rc     = new ReflectionFunction( $closure );
-			$args   = $rc->getParameters();
-			$params = $parameters;
+			$rc      = new ReflectionFunction( $closure );
+			$args    = $rc->getParameters();
+			$params  = $parameters;
+			$classes = [get_class( $this ), get_parent_class( $this )];
 
 			foreach ( $args as $index => $arg ) {
 				if ( $arg->getClass() === null ) {
 					continue;
 				}
 
-				if ( $arg->getClass()->name === 'Tank\Container' ) {
+				if ( in_array( $arg->getClass()->name, $classes ) ) {
 					$parameters[$index] = $this;
 				} else if ( $this->exists( $arg->getClass()->name ) ) {
 					$parameters[$index] = $this->make( $arg->getClass()->name );
