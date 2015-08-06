@@ -136,8 +136,19 @@ class Container implements ArrayAccess {
 	 *
 	 * @return string
 	 */
-	protected function get_class_prefix( $class ) {
-		return ( strpos( $class, '\\' ) !== false ? '\\' : '' ) . $class;
+	protected function get_class_prefix( $id ) {
+		if ( strpos( $id, '\\' ) !== false && $id[0] !== '\\' ) {
+			$class = '\\' . $id;
+
+			if ( isset( $this->values[$class] ) ) {
+				$out = get_class( $this->values[$class]['closure'] );
+				return $out !== false && ( $out === $class || $out === 'Closure' ) ? $class : $id;
+			}
+
+			return $class;
+		}
+
+		return $id;
 	}
 
 	/**
@@ -152,9 +163,11 @@ class Container implements ArrayAccess {
 			throw new InvalidArgumentException( 'Invalid argument. Must be string.' );
 		}
 
-		if ( ! isset( $this->keys[$id] ) ) {
+		if ( ! $this->exists( $id ) ) {
 			return false;
 		}
+
+		$id = $this->get_class_prefix( $id );
 
 		return $this->values[$id]['singleton'] === true;
 	}
@@ -172,9 +185,9 @@ class Container implements ArrayAccess {
 			throw new InvalidArgumentException( sprintf( 'Identifier `%s` is not defined', $id ) );
 		}
 
-		$value     = $this->values[$this->get_class_prefix( $id )];
-		// $singleton = $value['singleton'];
-		$closure   = $value['closure'];
+		$id      = $this->get_class_prefix( $id );
+		$value   = $this->values[$id];
+		$closure = $value['closure'];
 
 		return $this->call_closure( $closure, $parameters );
 	}
@@ -197,6 +210,7 @@ class Container implements ArrayAccess {
 	 * @param string $id
 	 */
 	public function remove( $id ) {
+		$id = $this->get_class_prefix( $id );
 		unset( $this->keys[$id], $this->values[$id] );
 	}
 
