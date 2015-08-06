@@ -16,6 +16,14 @@ use InvalidArgumentException;
 class Container implements ArrayAccess {
 
 	/**
+	 * The classes holder.
+	 *
+	 * @var array
+	 */
+
+	protected $classes = [];
+
+	/**
 	 * The keys holder.
 	 *
 	 * @var array
@@ -45,7 +53,8 @@ class Container implements ArrayAccess {
 
 		if ( is_object( $id ) && get_class( $id ) !== false ) {
 			$value = $id;
-			$id    = $this->get_class_prefix( get_class( $id ) );
+			$id    = $this->get_class_prefix( get_class( $id ), false );
+			$this->classes[$id] = true;
 		}
 
 		if ( $value instanceof Closure ) {
@@ -133,16 +142,16 @@ class Container implements ArrayAccess {
 	 * Get class prefix.
 	 *
 	 * @param string $class
+	 * @param bool $check
 	 *
 	 * @return string
 	 */
-	protected function get_class_prefix( $id ) {
+	protected function get_class_prefix( $id, $check = true ) {
 		if ( strpos( $id, '\\' ) !== false && $id[0] !== '\\' ) {
 			$class = '\\' . $id;
 
-			if ( isset( $this->values[$class] ) ) {
-				$out = get_class( $this->values[$class]['closure'] );
-				return $out !== false && ( $out === $class || $out === 'Closure' ) ? $class : $id;
+			if ( $check ) {
+				return isset( $this->classes[$class] ) ? $class : $id;
 			}
 
 			return $class;
