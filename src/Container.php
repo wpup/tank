@@ -1,6 +1,6 @@
 <?php
 
-namespace Tank;
+namespace Frozzare\Tank;
 
 use ArrayAccess;
 use Closure;

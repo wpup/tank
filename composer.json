@@ -19,12 +19,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Tank\\": "src/"
+      "Frozzare\\Tank\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Tank\\Tests\\": "tests/"
+      "Frozzare\\Tests\\Tank\\": "tests/"
     }
   },
   "require": {
