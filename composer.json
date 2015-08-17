@@ -19,14 +19,14 @@
   },
   "autoload": {
     "psr-4": {
-      "Tank\\": "src/"
+      "Frozzare\\Tank\\": "src/"
     }
   },
-	"autoload-dev": {
-		"psr-4": {
-			"Tank\\Tests\\": "tests/"
-		}
-	},
+  "autoload-dev": {
+    "psr-4": {
+      "Frozzare\\Tests\\Tank\\": "tests/"
+    }
+  },
   "require": {
     "php": ">=5.4",
     "composer/installers": "~1.0",

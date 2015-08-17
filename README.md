@@ -16,7 +16,7 @@ $ composer require frozzare/tank
 ## Example
 
 ```php
-use Tank\Container;
+use Frozzare\Tank\Container;
 
 class Plugin_Loader extends Container {
 

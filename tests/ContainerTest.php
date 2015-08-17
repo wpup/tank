@@ -1,8 +1,8 @@
 <?php
 
-namespace Tank\Tests;
+namespace Frozzare\Tests\Tank;
 
-use Tank\Container;
+use Frozzare\Tank\Container;
 
 class Test {
 	public function value() {
