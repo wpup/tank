@@ -1,7 +1,7 @@
 # tank
 
-[![Build Status](https://travis-ci.org/frozzare/tank.svg?branch=master)](https://travis-ci.org/frozzare/tank)  [![codecov.io](http://codecov.io/github/frozzare/tank/coverage.svg?branch=master)](http://codecov.io/github/frozzare/tank?branch=master)
-[![License](https://img.shields.io/packagist/l/frozzare/tank.svg)](https://packagist.org/packages/frozzare/tank)
+[![Build Status](https://travis-ci.org/frozzare/wp-tank.svg?branch=master)](https://travis-ci.org/frozzare/wp-tank)  [![codecov.io](http://codecov.io/github/frozzare/wp-tank/coverage.svg?branch=master)](http://codecov.io/github/frozzare/wp-tank?branch=master)
+[![License](https://img.shields.io/packagist/l/frozzare/wp-tank.svg)](https://packagist.org/packages/frozzare/tank)
 
 > Requires PHP 5.4
 
