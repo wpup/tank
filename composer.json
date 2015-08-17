@@ -2,7 +2,7 @@
   "name": "frozzare/tank",
   "license": "MIT",
   "description": "WordPress Container",
-  "homepage": "https://github.com/frozzare/tank",
+  "homepage": "https://github.com/frozzare/wp-tank",
   "authors": [
     {
       "name": "Fredrik Forsmo",
@@ -15,7 +15,7 @@
     "utilities"
   ],
   "support": {
-    "issues": "https://github.com/frozzare/tank/issues"
+    "issues": "https://github.com/frozzare/wp-tank/issues"
   },
   "autoload": {
     "psr-4": {
