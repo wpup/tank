@@ -11,6 +11,13 @@ use InvalidArgumentException;
 class Container implements ArrayAccess {
 
 	/**
+	 * The container instance if any.
+	 *
+	 * @var \Frozzare\Tank\Container
+	 */
+	protected static $_container_instance;
+
+	/**
 	 * The classes holder.
 	 *
 	 * @var array
@@ -42,8 +49,10 @@ class Container implements ArrayAccess {
 	 * Set a parameter or an object.
 	 *
 	 * @param  string $id
-	 * @param  mixed $value
-	 * @param  bool $singleton
+	 * @param  mixed  $value
+	 * @param  bool   $singleton
+	 *
+	 * @throws Exception If identifier don't exists.
 	 *
 	 * @return mixed
 	 */
@@ -76,6 +85,7 @@ class Container implements ArrayAccess {
 	 * Call closure.
 	 *
 	 * @param  mixed $closure
+	 * @param  array $parameters
 	 *
 	 * @return mixed
 	 */
@@ -144,8 +154,8 @@ class Container implements ArrayAccess {
 	/**
 	 * Get class prefix.
 	 *
-	 * @param string $class
-	 * @param bool $check
+	 * @param string $id
+	 * @param bool   $check
 	 *
 	 * @return string
 	 */
@@ -178,10 +188,21 @@ class Container implements ArrayAccess {
 		return $id;
 	}
 
+	/*
+	 * Get the container instance if any.
+	 *
+	 * @return \Frozzare\Tank\Container
+	 */
+	public static function get_instance() {
+		return static::$_container_instance;
+	}
+
 	/**
 	 * Determine if a given type is a singleton or not.
 	 *
 	 * @param string $id
+	 *
+	 * @throws InvalidArgumentException If identifier don't exists.
 	 *
 	 * @return bool
 	 */
@@ -206,6 +227,8 @@ class Container implements ArrayAccess {
 	 *
 	 * @param  string $id
 	 * @param  array  $parameters
+	 *
+	 * @throws InvalidArgumentException If identifier don't exists.
 	 *
 	 * @return mixed
 	 */
@@ -235,6 +258,17 @@ class Container implements ArrayAccess {
 	}
 
 	/**
+	 * Get the container instance if any.
+	 *
+	 * @param  \Frozzare\Tank\Container $container
+	 *
+	 * @return \Frozzare\Tank\Container
+	 */
+	public static function set_instance( Container $container ) {
+		static::$_container_instance = $container;
+	}
+
+	/**
 	 * Set a parameter or an object.
 	 *
 	 * @param  string $id
@@ -255,7 +289,7 @@ class Container implements ArrayAccess {
 	 */
 	// @codingStandardsIgnoreStart
 	public function offsetExists( $id ) {
-	// @codingStandardsIgnoreEnd
+		// @codingStandardsIgnoreEnd
 		return $this->exists( $id );
 	}
 
@@ -268,7 +302,7 @@ class Container implements ArrayAccess {
 	 */
 	// @codingStandardsIgnoreStart
 	public function offsetGet( $id ) {
-	// @codingStandardsIgnoreEnd
+		// @codingStandardsIgnoreEnd
 		return $this->make( $id );
 	}
 
@@ -280,7 +314,7 @@ class Container implements ArrayAccess {
 	 */
 	// @codingStandardsIgnoreStart
 	public function offsetSet( $id, $value ) {
-	// @codingStandardsIgnoreEnd
+		// @codingStandardsIgnoreEnd
 		$this->bind( $id, $value );
 	}
 
@@ -291,7 +325,7 @@ class Container implements ArrayAccess {
 	 */
 	// @codingStandardsIgnoreStart
 	public function offsetUnset( $id ) {
-	// @codingStandardsIgnoreEnd
+		// @codingStandardsIgnoreEnd
 		$this->remove( $id );
 	}
 }

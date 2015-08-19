@@ -15,11 +15,13 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->container = new Container;
+		require_once __DIR__ . '/fixtures/class-pack.php';
+		$this->pack = new \Pack\Pack;
 	}
 
 	public function tearDown() {
 		parent::tearDown();
-		unset( $this->container );
+		unset( $this->container, $this->pack );
 	}
 
 	public function test_make_not_defined() {
@@ -66,10 +68,25 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $this->container->exists( 'name' ) );
 	}
 
+	public function test_instance() {
+		$this->assertNull( Container::get_instance() );
+		Container::set_instance( $this->container );
+		$this->assertEquals( $this->container, Container::get_instance() );
+	}
+
 	public function test_remove() {
 		$this->container['plugin'] = 'Papi';
 		$this->container->remove( 'plugin' );
 		$this->assertFalse( isset( $this->container['plugin'] ) );
+	}
+
+	public function test_set_instance() {
+		$container = new Container;
+		$this->assertTrue( $container->get_instance() instanceof Container );
+		$pack = new \Pack\Pack;
+		$pack->bind( 'name', 'Fredrik' );
+		$container->set_instance( $pack );
+		$this->assertTrue( $container->get_instance() instanceof $pack );
 	}
 
 	public function test_singleton() {
