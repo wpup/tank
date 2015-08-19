@@ -16,6 +16,13 @@ use InvalidArgumentException;
 class Container implements ArrayAccess {
 
 	/**
+	 * The container instance if any.
+	 *
+	 * @var \Frozzare\Tank\Container
+	 */
+	protected static $instance;
+
+	/**
 	 * The classes holder.
 	 *
 	 * @var array
@@ -161,6 +168,15 @@ class Container implements ArrayAccess {
 	}
 
 	/**
+	 * Get the container instance if any.
+	 *
+	 * @return \Frozzare\Tank\Container
+	 */
+	public static function get_instance() {
+		return static::$instance;
+	}
+
+	/**
 	 * Determine if a given type is a singleton or not.
 	 *
 	 * @param string $id
@@ -202,6 +218,25 @@ class Container implements ArrayAccess {
 	}
 
 	/**
+	 * Unset value by identifier.
+	 *
+	 * @param string $id
+	 */
+	public function remove( $id ) {
+		$id = $this->get_class_prefix( $id );
+		unset( $this->keys[$id], $this->values[$id] );
+	}
+
+	/**
+	 * Get the container instance if any.
+	 *
+	 * @return \Frozzare\Tank\Container
+	 */
+	public static function set_instance( Container $instance ) {
+		static::$instance = $instance;
+	}
+
+	/**
 	 * Set a parameter or an object.
 	 *
 	 * @param string $id
@@ -211,16 +246,6 @@ class Container implements ArrayAccess {
 	 */
 	public function singleton( $id, $value = null ) {
 		return $this->bind( $id, $value, true );
-	}
-
-	/**
-	 * Unset value by identifier.
-	 *
-	 * @param string $id
-	 */
-	public function remove( $id ) {
-		$id = $this->get_class_prefix( $id );
-		unset( $this->keys[$id], $this->values[$id] );
 	}
 
 	/**

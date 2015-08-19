@@ -66,6 +66,12 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $this->container->exists( 'name' ) );
 	}
 
+	public function test_instance() {
+		$this->assertNull( Container::get_instance() );
+		Container::set_instance( $this->container );
+		$this->assertEquals( $this->container, Container::get_instance() )
+	}
+
 	public function test_remove() {
 		$this->container['plugin'] = 'Papi';
 		$this->container->remove( 'plugin' );
