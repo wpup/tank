@@ -69,7 +69,7 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 	public function test_instance() {
 		$this->assertNull( Container::get_instance() );
 		Container::set_instance( $this->container );
-		$this->assertEquals( $this->container, Container::get_instance() )
+		$this->assertEquals( $this->container, Container::get_instance() );
 	}
 
 	public function test_remove() {
