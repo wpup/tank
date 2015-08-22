@@ -45,7 +45,7 @@ echo $loader->make( 'say' );
 // Hello!
 ```
 
-Check the [source code](https://github.com/frozzare/tank/blob/master/src/Container.php) for methods that can be used.
+Check the [container source code](https://github.com/frozzare/tank/blob/master/src/class-container.php) for methods that can be used.
 
 ## License
 
