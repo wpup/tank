@@ -40,6 +40,7 @@ class Example_Provider extends Service_Provider {
 }
 
 $provider = new Example_Provider( $loader );
+$provider->register();
 echo $loader->make( 'say' );
 // Hello!
 ```
