@@ -8,11 +8,6 @@ use Exception;
 use ReflectionFunction;
 use InvalidArgumentException;
 
-/**
- * Container class.
- *
- * @package Tank
- */
 class Container implements ArrayAccess {
 
 	/**
@@ -20,7 +15,6 @@ class Container implements ArrayAccess {
 	 *
 	 * @var array
 	 */
-
 	protected $classes = [];
 
 	/**

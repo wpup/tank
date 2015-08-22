@@ -18,14 +18,10 @@
     "issues": "https://github.com/frozzare/wp-tank/issues"
   },
   "autoload": {
-    "psr-4": {
-      "Frozzare\\Tank\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Frozzare\\Tests\\Tank\\": "tests/"
-    }
+    "files": [
+      "src/class-container.php",
+      "src/class-service-provider.php"
+    ]
   },
   "require": {
     "php": ">=5.4",

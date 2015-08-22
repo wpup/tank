@@ -17,6 +17,7 @@ $ composer require frozzare/tank
 
 ```php
 use Frozzare\Tank\Container;
+use Frozzare\Tank\Service_Provider;
 
 class Plugin_Loader extends Container {
 
@@ -27,8 +28,20 @@ class Plugin_Loader extends Container {
 }
 
 $loader = new Plugin_Loader;
-echo $loader->make('number');
+echo $loader->make( 'number' );
 // 12345
+
+class Example_Provider extends Service_Provider {
+
+  public function register() {
+    $this->container->bind( 'say', 'Hello!' );
+  }
+
+}
+
+$provider = new Example_Provider( $loader );
+echo $loader->make( 'say' );
+// Hello!
 ```
 
 Check the [source code](https://github.com/frozzare/tank/blob/master/src/Container.php) for methods that can be used.
