@@ -27,6 +27,7 @@ class Plugin_Loader extends Container {
 }
 
 $loader = new Plugin_Loader;
+
 echo $loader->make( 'number' );
 // 12345
 ```
@@ -50,6 +51,7 @@ class Example_Provider extends Service_Provider {
 $container = new Container;
 $provider  = new Example_Provider( $container );
 $provider->register();
+
 echo $container->make( 'say' );
 // Hello!
 ```
