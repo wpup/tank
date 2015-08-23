@@ -13,11 +13,10 @@ WordPress Container.
 $ composer require frozzare/tank
 ```
 
-## Example
+## Container example
 
 ```php
 use Frozzare\Tank\Container;
-use Frozzare\Tank\Service_Provider;
 
 class Plugin_Loader extends Container {
 
@@ -30,6 +29,15 @@ class Plugin_Loader extends Container {
 $loader = new Plugin_Loader;
 echo $loader->make( 'number' );
 // 12345
+```
+
+Check the [container source code](https://github.com/frozzare/tank/blob/master/src/class-container.php) for methods that can be used.
+
+## Service provider example
+
+```php
+use Frozzare\Tank\Container;
+use Frozzare\Tank\Service_Provider;
 
 class Example_Provider extends Service_Provider {
 
@@ -39,13 +47,12 @@ class Example_Provider extends Service_Provider {
 
 }
 
-$provider = new Example_Provider( $loader );
+$container = new Container;
+$provider  = new Example_Provider( $container );
 $provider->register();
-echo $loader->make( 'say' );
+echo $container->make( 'say' );
 // Hello!
 ```
-
-Check the [container source code](https://github.com/frozzare/tank/blob/master/src/class-container.php) for methods that can be used.
 
 ## License
 
