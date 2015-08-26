@@ -506,16 +506,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "4.8.5",
+            "version": "4.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "9b7417edaf28059ea63d86be941e6004dbfcc0cc"
+                "reference": "2246830f4a1a551c67933e4171bf2126dc29d357"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/9b7417edaf28059ea63d86be941e6004dbfcc0cc",
-                "reference": "9b7417edaf28059ea63d86be941e6004dbfcc0cc",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/2246830f4a1a551c67933e4171bf2126dc29d357",
+                "reference": "2246830f4a1a551c67933e4171bf2126dc29d357",
                 "shasum": ""
             },
             "require": {
@@ -574,7 +574,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-08-19 09:20:57"
+            "time": "2015-08-24 04:09:38"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1134,12 +1134,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git",
-                "reference": "6438687cb9878b663d5b9f11b383b4141bf86f0a"
+                "reference": "d5717e795899c999cdfdc7d6f454042de7501dcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/6438687cb9878b663d5b9f11b383b4141bf86f0a",
-                "reference": "6438687cb9878b663d5b9f11b383b4141bf86f0a",
+                "url": "https://api.github.com/repos/WordPress-Coding-Standards/WordPress-Coding-Standards/zipball/d5717e795899c999cdfdc7d6f454042de7501dcf",
+                "reference": "d5717e795899c999cdfdc7d6f454042de7501dcf",
                 "shasum": ""
             },
             "require": {
@@ -1162,7 +1162,7 @@
                 "standards",
                 "wordpress"
             ],
-            "time": "2015-08-17 18:13:11"
+            "time": "2015-08-26 04:36:34"
         }
     ],
     "aliases": [],
