@@ -46,17 +46,13 @@ class Service_Provider_Test extends \PHPUnit_Framework_TestCase {
 }
 
 class Service_Provider_Stub extends Service_Provider {
-
     public function register() {
         $this->container->bind( 'name', 'Fredrik' );
     }
-
 }
 
 class Container_Stub extends Container {
-
     public function __construct() {
-      $this->bind( 'number', 12345 );
+		$this->bind( 'number', 12345 );
     }
-
 }

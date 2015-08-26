@@ -1,21 +1,24 @@
-<?xml version="1.0"?>
-<ruleset name="xu">
-	<description>Tank rules for PHP_CodeSniffer</description>
+<?php xml version="1.0"?>
+<ruleset name="Tank">
+  <description>Tank rules for PHP_CodeSniffer</description>
 
-	<exclude-pattern>tests/*</exclude-pattern>
-	<exclude-pattern>vendor/*</exclude-pattern>
+  <exclude-pattern>vendor/*</exclude-pattern>
 
-	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+  <rule ref="WordPress-Core">
+    <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions" />
+    <exclude name="WordPress.Arrays.ArrayDeclaration" />
+    <exclude name="WordPress.PHP.YodaConditions" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterStructureOpen" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeOpenParenthesis" />
+    <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
+    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis" />
+    <exclude name="Generic.Files.LowercasedFilename.NotFound" />
+  </rule>
 
-	<rule ref="WordPress-Core">
-		<exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions" />
-		<exclude name="WordPress.Arrays.ArrayDeclaration" />
-		<exclude name="WordPress.PHP.YodaConditions" />
-		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterStructureOpen" />
-		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeOpenParenthesis" />
-		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBetweenStructureColon" />
-		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
-		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace" />
-		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword" />
-	</rule>
+  <rule ref="Generic.WhiteSpace.ScopeIndent">
+    <properties>
+      <property name="indent" value="4"/>
+      <property name="tabIndent" value="false"/>
+    </properties>
+  </rule>
 </ruleset>
