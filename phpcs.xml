@@ -9,9 +9,8 @@
     <exclude name="WordPress.Arrays.ArrayDeclaration" />
     <exclude name="WordPress.PHP.YodaConditions" />
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterStructureOpen" />
-    <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceBeforeOpenParenthesis" />
-    <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
     <exclude name="WordPress.WhiteSpace.ControlStructureSpacing.NoSpaceAfterOpenParenthesis" />
+    <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
     <exclude name="Generic.Files.LowercasedFilename.NotFound" />
   </rule>
 
