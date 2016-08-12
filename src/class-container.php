@@ -25,6 +25,13 @@ class Container implements ArrayAccess {
 	protected $keys = [];
 
 	/**
+	 * The key prefix.
+	 *
+	 * @var string
+	 */
+	protected $prefix;
+
+	/**
 	 * The values holder.
 	 *
 	 * @var array
@@ -34,9 +41,9 @@ class Container implements ArrayAccess {
 	/**
 	 * Set a parameter or an object.
 	 *
-	 * @param string $id
-	 * @param mixed $value
-	 * @param bool $singleton
+	 * @param  string $id
+	 * @param  mixed $value
+	 * @param  bool $singleton
 	 *
 	 * @return mixed
 	 */
@@ -49,6 +56,8 @@ class Container implements ArrayAccess {
 			$value = $id;
 			$id    = $this->get_class_prefix( get_class( $id ), false );
 			$this->classes[$id] = true;
+		} else {
+			$id = $this->get_id( $id );
 		}
 
 		if ( $value instanceof Closure ) {
@@ -66,7 +75,7 @@ class Container implements ArrayAccess {
 	/**
 	 * Call closure.
 	 *
-	 * @param mixed $closure
+	 * @param  mixed $closure
 	 *
 	 * @return mixed
 	 */
@@ -110,19 +119,19 @@ class Container implements ArrayAccess {
 	/**
 	 * Check if identifier is set or not.
 	 *
-	 * @param string $id
+	 * @param  string $id
 	 *
 	 * @return bool
 	 */
 	public function exists( $id ) {
-		return isset( $this->keys[$this->get_class_prefix( $id )] );
+		return isset( $this->keys[$this->get_class_prefix( $this->get_id( $id ) )] );
 	}
 
 	/**
 	 * Get closure function.
 	 *
-	 * @param mixed $value
-	 * @param bool $singleton
+	 * @param  mixed $value
+	 * @param  bool $singleton
 	 *
 	 * @return mixed
 	 */
@@ -155,6 +164,21 @@ class Container implements ArrayAccess {
 	}
 
 	/**
+	 * Get id with prefix if any.
+	 *
+	 * @param  string $id
+	 *
+	 * @return string
+	 */
+	protected function get_id( $id ) {
+		if ( is_string( $id ) && $id[0] === '\\' ) {
+			return $this->prefix . $id;
+		}
+
+		return $id;
+	}
+
+	/**
 	 * Determine if a given type is a singleton or not.
 	 *
 	 * @param string $id
@@ -165,6 +189,8 @@ class Container implements ArrayAccess {
 		if ( ! is_string( $id ) ) {
 			throw new InvalidArgumentException( 'Invalid argument. Must be string.' );
 		}
+
+		$id = $this->get_id( $id );
 
 		if ( ! $this->exists( $id ) ) {
 			return false;
@@ -178,8 +204,8 @@ class Container implements ArrayAccess {
 	/**
 	 * Resolve the given type from the container.
 	 *
-	 * @param string $id
-	 * @param array $parameters
+	 * @param  string $id
+	 * @param  array  $parameters
 	 *
 	 * @return mixed
 	 */
@@ -188,6 +214,7 @@ class Container implements ArrayAccess {
 			throw new InvalidArgumentException( sprintf( 'Identifier `%s` is not defined', $id ) );
 		}
 
+		$id      = $this->get_id( $id );
 		$id      = $this->get_class_prefix( $id );
 		$value   = $this->values[$id];
 		$closure = $value['closure'];
@@ -201,15 +228,17 @@ class Container implements ArrayAccess {
 	 * @param string $id
 	 */
 	public function remove( $id ) {
+		$id = $this->get_id( $id );
 		$id = $this->get_class_prefix( $id );
+
 		unset( $this->keys[$id], $this->values[$id] );
 	}
 
 	/**
 	 * Set a parameter or an object.
 	 *
-	 * @param string $id
-	 * @param mixed $value
+	 * @param  string $id
+	 * @param  mixed  $value
 	 *
 	 * @return mixed
 	 */
@@ -220,7 +249,7 @@ class Container implements ArrayAccess {
 	/**
 	 * Check if identifier is set or not.
 	 *
-	 * @param string $id
+	 * @param  string $id
 	 *
 	 * @return bool
 	 */
@@ -233,7 +262,7 @@ class Container implements ArrayAccess {
 	/**
 	 * Get value by identifier.
 	 *
-	 * @param string $id
+	 * @param  string $id
 	 *
 	 * @return mixed
 	 */
