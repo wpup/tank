@@ -40,5 +40,4 @@ abstract class Service_Provider {
 	public function __call( $method, $parameters ) {
 		throw new BadMethodCallException( "Call to undefined method `{$method}`" );
 	}
-
 }

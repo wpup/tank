@@ -105,7 +105,7 @@ class Container implements ArrayAccess {
 					continue;
 				}
 
-				if ( in_array( $arg->getClass()->name, $classes ) ) {
+				if ( in_array( $arg->getClass()->name, $classes, true ) ) {
 					$parameters[$index] = $this;
 				} else if ( $this->exists( $arg->getClass()->name ) ) {
 					$parameters[$index] = $this->make( $arg->getClass()->name );
@@ -146,7 +146,7 @@ class Container implements ArrayAccess {
 	 * @return mixed
 	 */
 	protected function get_closure( $value, $singleton = false ) {
-		return function() use( $value, $singleton ) {
+		return function() use ( $value, $singleton ) {
 			return $value;
 		};
 	}

@@ -29,7 +29,7 @@
     "phpunit/phpunit": "~4.0"
   },
   "require-dev": {
-    "wp-coding-standards/wpcs": "dev-develop"
+    "wp-coding-standards/wpcs": "^0.9"
   },
   "scripts": {
     "post-install-cmd": "if [ -f vendor/bin/phpcs ]; then \"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs; fi",
