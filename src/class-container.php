@@ -36,7 +36,7 @@ class Container implements ArrayAccess {
 	 *
 	 * @var string
 	 */
-	protected $prefix;
+	protected $prefix = '';
 
 	/**
 	 * The values holder.
@@ -187,7 +187,7 @@ class Container implements ArrayAccess {
 
 		$test = strpos( $id, '\\' ) !== false ? ltrim( $id, '\\' ) . $id : $id;
 
-		if ( class_exists( $test ) ) {
+		if ( class_exists( $test ) || empty( $prefix ) ) {
 			return $id;
 		}
 
