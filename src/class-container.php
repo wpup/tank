@@ -171,7 +171,7 @@ class Container implements ArrayAccess {
 	 * @return string
 	 */
 	protected function get_id( $id ) {
-		if ( is_string( $id ) && $id[0] === '\\' ) {
+		if ( is_string( $id ) && ! class_exists( $id ) ) {
 			return $this->prefix . $id;
 		}
 
