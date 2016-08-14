@@ -30,6 +30,8 @@ abstract class Service_Provider {
 	/**
 	 * Get the services provided by the provider.
 	 *
+	 * @codeCoverageIgnore
+	 *
 	 * @return array
 	 */
 	public function provides() {
