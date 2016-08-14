@@ -162,6 +162,15 @@ class Container implements ArrayAccess {
 	}
 
 	/**
+	 * Flush container of all classes, keys and values.
+	 */
+	public function flush() {
+		$this->classes = [];
+		$this->keys    = [];
+		$this->values  = [];
+	}
+
+	/**
 	 * Get closure function.
 	 *
 	 * @param  mixed $value

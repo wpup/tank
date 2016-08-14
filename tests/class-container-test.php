@@ -80,6 +80,13 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue( $this->container->exists( 'name' ) );
 	}
 
+	public function test_flush() {
+		$this->container->bind( 'name', 'Fredrik' );
+		$this->assertTrue( $this->container->bound( 'name' ) );
+		$this->container->flush();
+		$this->assertFalse( $this->container->bound( 'name' ) );
+	}
+
 	public function test_instance() {
 		$this->assertNull( Container::get_instance() );
 		Container::set_instance( $this->container );
