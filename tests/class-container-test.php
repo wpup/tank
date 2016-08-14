@@ -31,7 +31,14 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 
 	public function test_bind() {
 		$this->container->bind( 'name', 'Fredrik' );
-		$this->assertEquals( 'Fredrik', $this->container->make( 'name' ) );
+		$this->assertSame( 'Fredrik', $this->container->make( 'name' ) );
+	}
+
+	public function test_bind_if() {
+		$this->container->bind_if( 'name', 'Fredrik' );
+		$this->assertSame( 'Fredrik', $this->container->make( 'name' ) );
+		$this->container->bind_if( 'name', 'Elli' );
+		$this->assertSame( 'Fredrik', $this->container->make( 'name' ) );
 	}
 
 	public function test_bound() {
@@ -47,8 +54,8 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		$this->container->bind( 'num3', function ( $c ) {
 			return $c->make( 'num2' );
 		} );
-		$this->assertEquals( 123, $this->container->make( 'num2' ) );
-		$this->assertEquals( 123, $this->container->make( 'num3' ) );
+		$this->assertSame( 123, $this->container->make( 'num2' ) );
+		$this->assertSame( 123, $this->container->make( 'num3' ) );
 	}
 
 	public function test_closure_injection() {
@@ -59,13 +66,13 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		$this->container->bind( 'num3', function ( Container $c, $num ) {
 			return $c->make( 'num2' ) + $num;
 		} );
-		$this->assertEquals( 123, $this->container->make( 'num2' ) );
-		$this->assertEquals( 124, $this->container->make( 'num3', [1] ) );
+		$this->assertSame( 123, $this->container->make( 'num2' ) );
+		$this->assertSame( 124, $this->container->make( 'num3', [1] ) );
 		$this->container->bind( new Test );
 		$this->container->bind( 'test-class', function ( Test $test ) {
 			return $test->value();
 		} );
-		$this->assertEquals( 'Test class', $this->container->make( 'test-class' ) );
+		$this->assertSame( 'Test class', $this->container->make( 'test-class' ) );
 	}
 
 	public function test_exists() {
@@ -76,7 +83,7 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 	public function test_instance() {
 		$this->assertNull( Container::get_instance() );
 		Container::set_instance( $this->container );
-		$this->assertEquals( $this->container, Container::get_instance() );
+		$this->assertSame( $this->container, Container::get_instance() );
 	}
 
 	public function test_remove() {
@@ -96,7 +103,7 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 
 	public function test_singleton() {
 		$this->container->singleton( 'Singleton', 'App' );
-		$this->assertEquals( 'App', $this->container->make( 'Singleton' ) );
+		$this->assertSame( 'App', $this->container->make( 'Singleton' ) );
 
 		try {
 			$this->container->bind( 'Singleton', 'App' );
@@ -110,13 +117,13 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 			$this->assertNotEmpty( $e->getMessage() );
 		}
 
-		$this->assertEquals( 'App', $this->container->make( 'Singleton' ) );
+		$this->assertSame( 'App', $this->container->make( 'Singleton' ) );
 		$this->assertTrue( $this->container->is_singleton( 'Singleton' ) );
 
 		try {
 			$this->container->is_singleton( true );
 		} catch ( \Exception $e ) {
-			$this->assertEquals( 'Invalid argument. Must be string.', $e->getMessage() );
+			$this->assertSame( 'Invalid argument. Must be string.', $e->getMessage() );
 		}
 	}
 
@@ -127,12 +134,12 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 
 	public function test_offset_get() {
 		$this->container->bind( 'name', 'Fredrik' );
-		$this->assertEquals( 'Fredrik', $this->container['name'] );
+		$this->assertSame( 'Fredrik', $this->container['name'] );
 	}
 
 	public function test_offset_set() {
 		$this->container['plugin'] = 'Papi';
-		$this->assertEquals( 'Papi', $this->container['plugin'] );
+		$this->assertSame( 'Papi', $this->container['plugin'] );
 	}
 
 	public function test_offset_unset() {

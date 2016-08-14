@@ -46,7 +46,7 @@ class Container implements ArrayAccess {
 	protected $values = [];
 
 	/**
-	 * Set a parameter or an object.
+	 * Instantiate a concrete instance of the given type.
 	 *
 	 * @param  string $id
 	 * @param  mixed  $value
@@ -79,6 +79,19 @@ class Container implements ArrayAccess {
 		$this->keys[$id]   = true;
 
 		return $value;
+	}
+
+	/**
+	 * Register a binding if it hasn't already been registered.
+	 *
+	 * @param string $id
+	 * @param null   $value
+	 * @param bool   $singleton
+	 */
+	public function bind_if( $id, $value = null, $singleton = false ) {
+		if ( ! $this->bound( $id ) ) {
+			$this->bind( $id, $value, $singleton );
+		}
 	}
 
 	/**
