@@ -15,6 +15,8 @@ class Service_Provider_Test extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame( 'Fredrik', $container->make( 'name' ) );
 		$this->assertSame( 'Fredrik', $container['name'] );
+
+		$this->assertSame( ['name'], $provider->provides() );
 	}
 
 	public function test_service_provider_2() {
@@ -46,12 +48,18 @@ class Service_Provider_Test extends \PHPUnit_Framework_TestCase {
 }
 
 class Service_Provider_Stub extends Service_Provider {
+
 	public function register() {
 		$this->container->bind( 'name', 'Fredrik' );
+	}
+
+	public function provides() {
+		return ['name'];
 	}
 }
 
 class Container_Stub extends Container {
+
 	public function __construct() {
 		$this->bind( 'number', 12345 );
 	}
