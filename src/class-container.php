@@ -62,8 +62,8 @@ class Container implements ArrayAccess {
 		}
 
 		if ( is_object( $id ) && get_class( $id ) !== false ) {
-			$value = $id;
-			$id    = $this->get_class_prefix( get_class( $id ), false );
+			$value              = $id;
+			$id                 = $this->get_class_prefix( get_class( $id ), false );
 			$this->classes[$id] = true;
 		} else {
 			$id = $this->get_id( $id );
@@ -76,9 +76,20 @@ class Container implements ArrayAccess {
 		}
 
 		$this->values[$id] = compact( 'closure', 'singleton' );
-		$this->keys[$id] = true;
+		$this->keys[$id]   = true;
 
 		return $value;
+	}
+
+	/**
+	 * Check if identifier is bound or not.
+	 *
+	 * @param  string $id
+	 *
+	 * @return bool
+	 */
+	public function bound( $id ) {
+		return $this->exists( $id );
 	}
 
 	/**
@@ -141,12 +152,12 @@ class Container implements ArrayAccess {
 	 * Get closure function.
 	 *
 	 * @param  mixed $value
-	 * @param  bool $singleton
+	 * @param  bool  $singleton
 	 *
 	 * @return mixed
 	 */
 	protected function get_closure( $value, $singleton = false ) {
-		return function() use ( $value, $singleton ) {
+		return function () use ( $value, $singleton ) {
 			return $value;
 		};
 	}
@@ -316,7 +327,7 @@ class Container implements ArrayAccess {
 	 * Set a parameter or an object.
 	 *
 	 * @param string $id
-	 * @param mixed $value
+	 * @param mixed  $value
 	 */
 	// @codingStandardsIgnoreStart
 	public function offsetSet( $id, $value ) {

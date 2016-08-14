@@ -34,6 +34,11 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( 'Fredrik', $this->container->make( 'name' ) );
 	}
 
+	public function test_bound() {
+		$this->container->bind( 'name', 'Fredrik' );
+		$this->assertTrue( $this->container->bound( 'name' ) );
+	}
+
 	public function test_closure() {
 		$this->container->bind( 'num', 123 );
 		$this->container->bind( 'num2', function ( $c ) {
