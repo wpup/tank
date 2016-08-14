@@ -13,8 +13,8 @@ class Service_Provider_Test extends \PHPUnit_Framework_TestCase {
 
 		$provider->register();
 
-		$this->assertEquals( 'Fredrik', $container->make( 'name' ) );
-		$this->assertEquals( 'Fredrik', $container['name'] );
+		$this->assertSame( 'Fredrik', $container->make( 'name' ) );
+		$this->assertSame( 'Fredrik', $container['name'] );
 	}
 
 	public function test_service_provider_2() {
@@ -23,8 +23,8 @@ class Service_Provider_Test extends \PHPUnit_Framework_TestCase {
 
 		$provider->register();
 
-		$this->assertEquals( 'Fredrik', $container->make( 'name' ) );
-		$this->assertEquals( 'Fredrik', $container['name'] );
+		$this->assertSame( 'Fredrik', $container->make( 'name' ) );
+		$this->assertSame( 'Fredrik', $container['name'] );
 	}
 
 	public function test_service_provider_3() {
@@ -33,13 +33,13 @@ class Service_Provider_Test extends \PHPUnit_Framework_TestCase {
 
 		$provider->register();
 
-		$this->assertEquals( 'Fredrik', $container->make( 'name' ) );
-		$this->assertEquals( 'Fredrik', $container['name'] );
+		$this->assertSame( 'Fredrik', $container->make( 'name' ) );
+		$this->assertSame( 'Fredrik', $container['name'] );
 
 		try {
 			$provider->test();
 		} catch ( \BadMethodCallException $e ) {
-			$this->assertEquals( 'Call to undefined method `test`', $e->getMessage() );
+			$this->assertSame( 'Call to undefined method `test`', $e->getMessage() );
 		}
 	}
 
