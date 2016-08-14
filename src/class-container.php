@@ -39,13 +39,6 @@ class Container implements ArrayAccess {
 	protected $keys = [];
 
 	/**
-	 * The key perfix.
-	 *
-	 * @var string
-	 */
-	protected $prefix = '';
-
-	/**
 	 * Register a binding with the container.
 	 *
 	 * @param  string $id
@@ -65,8 +58,6 @@ class Container implements ArrayAccess {
 			$value              = $id;
 			$id                 = $this->get_class_prefix( get_class( $id ), false );
 			$this->classes[$id] = true;
-		} else {
-			$id = $this->get_id( $id );
 		}
 
 		if ( $value instanceof Closure ) {
@@ -158,7 +149,7 @@ class Container implements ArrayAccess {
 	 * @return bool
 	 */
 	public function exists( $id ) {
-		return isset( $this->keys[$this->get_class_prefix( $this->get_id( $id ) )] );
+		return isset( $this->keys[$this->get_class_prefix( $id )] );
 	}
 
 	/**
@@ -215,27 +206,6 @@ class Container implements ArrayAccess {
 		return $id;
 	}
 
-	/**
-	 * Get id with prefix if any.
-	 *
-	 * @param  string $id
-	 *
-	 * @return string
-	 */
-	protected function get_id( $id ) {
-		if ( ! is_string( $id ) ) {
-			return $id;
-		}
-
-		$test = strpos( $id, '\\' ) !== false ? ltrim( $id, '\\' ) . $id : $id;
-
-		if ( class_exists( $test ) || empty( $prefix ) ) {
-			return $id;
-		}
-
-		return $this->prefix . $id;
-	}
-
 	/*
 	 * Get the container instance if any.
 	 *
@@ -258,8 +228,6 @@ class Container implements ArrayAccess {
 		if ( ! is_string( $id ) ) {
 			throw new InvalidArgumentException( 'Invalid argument. Must be string.' );
 		}
-
-		$id = $this->get_id( $id );
 
 		if ( ! $this->bound( $id ) ) {
 			return false;
@@ -285,7 +253,6 @@ class Container implements ArrayAccess {
 			throw new InvalidArgumentException( sprintf( 'Identifier `%s` is not defined', $id ) );
 		}
 
-		$id      = $this->get_id( $id );
 		$id      = $this->get_class_prefix( $id );
 		$value   = $this->bindings[$id];
 		$closure = $value['closure'];
@@ -299,7 +266,6 @@ class Container implements ArrayAccess {
 	 * @param string $id
 	 */
 	public function remove( $id ) {
-		$id = $this->get_id( $id );
 		$id = $this->get_class_prefix( $id );
 
 		unset( $this->keys[$id], $this->bindings[$id] );
