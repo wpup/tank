@@ -14,9 +14,6 @@
     "wordpress",
     "utilities"
   ],
-  "support": {
-    "issues": "https://github.com/frozzare/wp-tank/issues"
-  },
   "autoload": {
     "files": [
       "src/class-container.php",
