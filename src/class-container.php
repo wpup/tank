@@ -11,11 +11,11 @@ use InvalidArgumentException;
 class Container implements ArrayAccess {
 
 	/**
-	 * The container instance if any.
+	 * The container's instance if any.
 	 *
 	 * @var \Frozzare\Tank\Container
 	 */
-	protected static $_container_instance;
+	protected static $instance;
 
 	/**
 	 * The container's bindings.
@@ -242,7 +242,7 @@ class Container implements ArrayAccess {
 	 * @return \Frozzare\Tank\Container
 	 */
 	public static function get_instance() {
-		return static::$_container_instance;
+		return static::$instance;
 	}
 
 	/**
@@ -313,7 +313,7 @@ class Container implements ArrayAccess {
 	 * @return \Frozzare\Tank\Container
 	 */
 	public static function set_instance( Container $container ) {
-		static::$_container_instance = $container;
+		static::$instance = $container;
 	}
 
 	/**
