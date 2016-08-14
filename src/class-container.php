@@ -18,32 +18,32 @@ class Container implements ArrayAccess {
 	protected static $_container_instance;
 
 	/**
-	 * The classes holder.
+	 * The container's bindings.
+	 *
+	 * @var array
+	 */
+	protected $bindings = [];
+
+	/**
+	 * The container's classes.
 	 *
 	 * @var array
 	 */
 	protected $classes = [];
 
 	/**
-	 * The keys holder.
+	 * The container's keys.
 	 *
 	 * @var array
 	 */
 	protected $keys = [];
 
 	/**
-	 * The key prefix.
+	 * The container's key perfix.
 	 *
 	 * @var string
 	 */
 	protected $prefix = '';
-
-	/**
-	 * The values holder.
-	 *
-	 * @var array
-	 */
-	protected $values = [];
 
 	/**
 	 * Register a binding with the container.
@@ -75,8 +75,8 @@ class Container implements ArrayAccess {
 			$closure = $this->get_closure( $value, $singleton );
 		}
 
-		$this->values[$id] = compact( 'closure', 'singleton' );
-		$this->keys[$id]   = true;
+		$this->bindings[$id] = compact( 'closure', 'singleton' );
+		$this->keys[$id]     = true;
 
 		return $value;
 	}
@@ -165,9 +165,9 @@ class Container implements ArrayAccess {
 	 * Flush container of all classes, keys and values.
 	 */
 	public function flush() {
-		$this->classes = [];
-		$this->keys    = [];
-		$this->values  = [];
+		$this->classes  = [];
+		$this->keys     = [];
+		$this->bindings = [];
 	}
 
 	/**
@@ -176,7 +176,7 @@ class Container implements ArrayAccess {
 	 * @return array
 	 */
 	public function get_bindings() {
-		return $this->values;
+		return $this->bindings;
 	}
 
 	/**
@@ -267,7 +267,7 @@ class Container implements ArrayAccess {
 
 		$id = $this->get_class_prefix( $id );
 
-		return $this->values[$id]['singleton'] === true;
+		return $this->bindings[$id]['singleton'] === true;
 	}
 
 	/**
@@ -287,7 +287,7 @@ class Container implements ArrayAccess {
 
 		$id      = $this->get_id( $id );
 		$id      = $this->get_class_prefix( $id );
-		$value   = $this->values[$id];
+		$value   = $this->bindings[$id];
 		$closure = $value['closure'];
 
 		return $this->call_closure( $closure, $parameters );
@@ -302,7 +302,7 @@ class Container implements ArrayAccess {
 		$id = $this->get_id( $id );
 		$id = $this->get_class_prefix( $id );
 
-		unset( $this->keys[$id], $this->values[$id] );
+		unset( $this->keys[$id], $this->bindings[$id] );
 	}
 
 	/**
