@@ -171,7 +171,7 @@ class Container implements ArrayAccess {
 	}
 
 	/**
-	 * Get the container's bindings.
+	 * Get the bindings.
 	 *
 	 * @return array
 	 */
