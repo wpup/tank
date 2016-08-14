@@ -18,28 +18,28 @@ class Container implements ArrayAccess {
 	protected static $instance;
 
 	/**
-	 * The container's bindings.
+	 * The bindings holder.
 	 *
 	 * @var array
 	 */
 	protected $bindings = [];
 
 	/**
-	 * The container's classes.
+	 * The classes holder.
 	 *
 	 * @var array
 	 */
 	protected $classes = [];
 
 	/**
-	 * The container's keys.
+	 * The keys holder.
 	 *
 	 * @var array
 	 */
 	protected $keys = [];
 
 	/**
-	 * The container's key perfix.
+	 * The key perfix.
 	 *
 	 * @var string
 	 */
@@ -151,7 +151,7 @@ class Container implements ArrayAccess {
 	}
 
 	/**
-	 * Check if identifier is set or not.
+	 * Check if identifier exists or not.
 	 *
 	 * @param  string $id
 	 *
