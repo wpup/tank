@@ -28,6 +28,15 @@ abstract class Service_Provider {
 	abstract public function register();
 
 	/**
+	 * Get the services provided by the provider.
+	 *
+	 * @return array
+	 */
+	public function provides() {
+		return [];
+	}
+
+	/**
 	 * Dynamically handle missing method calls.
 	 *
 	 * @param  string $method
