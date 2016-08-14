@@ -261,7 +261,7 @@ class Container implements ArrayAccess {
 
 		$id = $this->get_id( $id );
 
-		if ( ! $this->exists( $id ) ) {
+		if ( ! $this->bound( $id ) ) {
 			return false;
 		}
 
