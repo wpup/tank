@@ -5,6 +5,7 @@ namespace Frozzare\Tests\Tank;
 use Frozzare\Tank\Container;
 
 class Test {
+
 	public function value() {
 		return 'Test class';
 	}
@@ -91,6 +92,13 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		$this->assertNull( Container::get_instance() );
 		Container::set_instance( $this->container );
 		$this->assertSame( $this->container, Container::get_instance() );
+	}
+
+	public function test_get_bindings() {
+		$this->assertEmpty( $this->container->get_bindings() );
+		$this->container->bind( 'name', 'Fredrik' );
+		$bindings = $this->container->get_bindings();
+		$this->assertSame( 'Fredrik', $bindings['name']['closure']() );
 	}
 
 	public function test_remove() {

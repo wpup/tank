@@ -171,6 +171,15 @@ class Container implements ArrayAccess {
 	}
 
 	/**
+	 * Get the container's bindings.
+	 *
+	 * @return array
+	 */
+	public function get_bindings() {
+		return $this->values;
+	}
+
+	/**
 	 * Get closure function.
 	 *
 	 * @param  mixed $value
