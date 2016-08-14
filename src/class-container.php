@@ -46,7 +46,7 @@ class Container implements ArrayAccess {
 	protected $values = [];
 
 	/**
-	 * Instantiate a concrete instance of the given type.
+	 * Register a binding with the container.
 	 *
 	 * @param  string $id
 	 * @param  mixed  $value
