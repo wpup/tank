@@ -45,7 +45,7 @@ class Container implements ArrayAccess {
 	 * @param  mixed  $value
 	 * @param  bool   $singleton
 	 *
-	 * @throws Exception If identifier don't exists.
+	 * @throws Exception If identifier is not bound.
 	 *
 	 * @return mixed
 	 */
@@ -93,7 +93,7 @@ class Container implements ArrayAccess {
 	 * @return bool
 	 */
 	public function bound( $id ) {
-		return $this->exists( $id );
+		return isset( $this->keys[$this->get_class_prefix( $id )] );
 	}
 
 	/**
@@ -122,7 +122,7 @@ class Container implements ArrayAccess {
 
 				if ( in_array( $arg->getClass()->name, $classes, true ) ) {
 					$parameters[$index] = $this;
-				} else if ( $this->exists( $arg->getClass()->name ) ) {
+				} else if ( $this->bound( $arg->getClass()->name ) ) {
 					$parameters[$index] = $this->make( $arg->getClass()->name );
 				}
 			}
@@ -139,17 +139,6 @@ class Container implements ArrayAccess {
 		}
 
 		return $closure;
-	}
-
-	/**
-	 * Check if identifier exists or not.
-	 *
-	 * @param  string $id
-	 *
-	 * @return bool
-	 */
-	public function exists( $id ) {
-		return isset( $this->keys[$this->get_class_prefix( $id )] );
 	}
 
 	/**
@@ -220,7 +209,7 @@ class Container implements ArrayAccess {
 	 *
 	 * @param string $id
 	 *
-	 * @throws InvalidArgumentException If identifier don't exists.
+	 * @throws InvalidArgumentException If identifier is not bound.
 	 *
 	 * @return bool
 	 */
@@ -244,12 +233,12 @@ class Container implements ArrayAccess {
 	 * @param  string $id
 	 * @param  array  $parameters
 	 *
-	 * @throws InvalidArgumentException If identifier don't exists.
+	 * @throws InvalidArgumentException If identifier is not bound.
 	 *
 	 * @return mixed
 	 */
 	public function make( $id, array $parameters = [] ) {
-		if ( ! $this->exists( $id ) ) {
+		if ( ! $this->bound( $id ) ) {
 			throw new InvalidArgumentException( sprintf( 'Identifier `%s` is not defined', $id ) );
 		}
 
@@ -304,7 +293,7 @@ class Container implements ArrayAccess {
 	// @codingStandardsIgnoreStart
 	public function offsetExists( $id ) {
 		// @codingStandardsIgnoreEnd
-		return $this->exists( $id );
+		return $this->bound( $id );
 	}
 
 	/**

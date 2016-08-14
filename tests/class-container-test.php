@@ -76,11 +76,6 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		$this->assertSame( 'Test class', $this->container->make( 'test-class' ) );
 	}
 
-	public function test_exists() {
-		$this->container->bind( 'name', 'Fredrik' );
-		$this->assertTrue( $this->container->exists( 'name' ) );
-	}
-
 	public function test_flush() {
 		$this->container->bind( 'name', 'Fredrik' );
 		$this->assertTrue( $this->container->bound( 'name' ) );
