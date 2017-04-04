@@ -137,6 +137,12 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public function test_bind_class_string() {
+		$container = new Container;
+		$container->bind( 'pack', '\\Pack\\Pack' );
+		$this->assertInstanceOf( '\\Pack\\Pack', $container->make( 'pack' ) );
+	}
+
 	public function test_offset_exists() {
 		$this->container->bind( 'name', 'Fredrik' );
 		$this->assertTrue( isset( $this->container['name'] ) );
@@ -157,5 +163,4 @@ class Container_Test extends \PHPUnit_Framework_TestCase {
 		unset( $this->container['plugin'] );
 		$this->assertFalse( isset( $this->container['plugin'] ) );
 	}
-
 }

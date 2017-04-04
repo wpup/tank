@@ -5,6 +5,7 @@ namespace Frozzare\Tank;
 use ArrayAccess;
 use Closure;
 use Exception;
+use ReflectionClass;
 use ReflectionFunction;
 use InvalidArgumentException;
 
@@ -52,6 +53,19 @@ class Container implements ArrayAccess {
 	public function bind( $id, $value = null, $singleton = false ) {
 		if ( is_string( $id ) && $this->is_singleton( $id ) ) {
 			throw new Exception( sprintf( 'Identifier `%s` is a singleton and cannot be rebind', $id ) );
+		}
+
+		if ( is_string( $value ) && class_exists( $value ) ) {
+			$closure = new ReflectionClass( $value );
+			$value   = $this->call_closure( $closure );
+			$closure = function () use ( $value ) {
+				return $value;
+			};
+
+			$this->bindings[$id] = compact( 'closure', 'singleton' );
+			$this->keys[$id]     = true;
+
+			return $value;
 		}
 
 		if ( is_object( $id ) && get_class( $id ) !== false ) {
@@ -108,37 +122,53 @@ class Container implements ArrayAccess {
 		if ( $closure instanceof Closure ) {
 			$rc      = new ReflectionFunction( $closure );
 			$args    = $rc->getParameters();
-			$params  = $parameters;
-			$classes = [
-				$this->get_class_prefix( get_class( $this ) ),
-				get_class( $this ),
-				get_parent_class( $this )
-			];
+		} else if ( $closure instanceof ReflectionClass ) {
+			$rc = $closure;
 
-			foreach ( $args as $index => $arg ) {
-				if ( $arg->getClass() === null ) {
-					continue;
-				}
-
-				if ( in_array( $arg->getClass()->name, $classes, true ) ) {
-					$parameters[$index] = $this;
-				} else if ( $this->bound( $arg->getClass()->name ) ) {
-					$parameters[$index] = $this->make( $arg->getClass()->name );
-				}
+			if ( $constructor = $rc->getConstructor() ) {
+				$args = $constructor->getParameters();
+			} else {
+				$args = [];
 			}
 
-			if ( ! empty( $args ) && empty( $parameters ) ) {
-				$parameters[0] = $this;
-			}
-
-			if ( count( $args ) > count( $parameters ) ) {
-				$parameters = array_merge( $parameters, $params );
-			}
-
-			return $this->call_closure( call_user_func_array( $closure, $parameters ), $parameters );
+			$closure = function () use ( $rc ) {
+				return $rc->newInstanceArgs( func_get_args() );
+			};
 		}
 
-		return $closure;
+		if ( $closure instanceof Closure === false ) {
+			return $closure;
+		}
+
+		$args    = is_array( $args ) ? $args : [];
+		$params  = $parameters;
+		$classes = [
+			$this->get_class_prefix( get_class( $this ) ),
+			get_class( $this ),
+			get_parent_class( $this )
+		];
+
+		foreach ( (array) $args as $index => $arg ) {
+			if ( $arg->getClass() === null ) {
+				continue;
+			}
+
+			if ( in_array( $arg->getClass()->name, $classes, true ) ) {
+				$parameters[$index] = $this;
+			} else if ( $this->bound( $arg->getClass()->name ) ) {
+				$parameters[$index] = $this->make( $arg->getClass()->name );
+			}
+		}
+
+		if ( ! empty( $args ) && empty( $parameters ) ) {
+			$parameters[0] = $this;
+		}
+
+		if ( count( $args ) > count( $parameters ) ) {
+			$parameters = array_merge( $parameters, $params );
+		}
+
+		return $this->call_closure( call_user_func_array( $closure, $parameters ), $parameters );
 	}
 
 	/**
