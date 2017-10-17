@@ -10,7 +10,7 @@ WordPress Container.
 ## Install
 
 ```
-$ composer require frozzare/tank
+composer require frozzare/tank
 ```
 
 ## Container example
