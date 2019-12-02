@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/wpup/tank.svg?branch=master)](https://travis-ci.org/wpup/tank)  [![codecov.io](http://codecov.io/github/wpup/tank/coverage.svg?branch=master)](http://codecov.io/github/wpup/tank?branch=master)
 [![License](https://img.shields.io/packagist/l/frozzare/tank.svg)](https://packagist.org/packages/frozzare/tank)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 > Requires PHP 5.6
 
